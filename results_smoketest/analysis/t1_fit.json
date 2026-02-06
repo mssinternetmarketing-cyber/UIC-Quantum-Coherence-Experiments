@@ -1,0 +1,17 @@
+{
+  "T1_us": 94738913083.45958,
+  "details": {
+    "a": 1.0000000009839425,
+    "cov": [
+      [
+        Infinity,
+        Infinity
+      ],
+      [
+        Infinity,
+        Infinity
+      ]
+    ],
+    "n": 140
+  }
+}

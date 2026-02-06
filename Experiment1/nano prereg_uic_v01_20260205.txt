@@ -1,0 +1,32 @@
+UIC v0.1 — Relational Perturbation Hypothesis (RPH) Test
+Preregistered: [DATE]
+
+HYPOTHESIS:
+Entangled qubits with structured informational coupling will exhibit
+longer T2* coherence times (Ramsey decay constant) than isolated qubits
+or entangled qubits with random noise coupling.
+
+METRICS:
+Primary: T2* (µs) from Ramsey visibility decay fits
+Secondary: Mutual information I(A:B) in Z-basis at measurement time
+Tertiary: Shannon entropy H(A,B) (classical proxy)
+
+CONDITIONS (BLINDED):
+Z: Calibration/noise baseline (T1 + T2* same session window)
+A: Isolated qubit Ramsey (T2* baseline)
+B: Bell + structured coupling (dynamic measurement + conditional feedback when supported)
+C: Bell + random Pauli noise control
+
+STATISTICAL TEST (PRIMARY):
+One-way ANOVA on visibility distributions across A/B/C (α = 0.05)
+Post-hoc: Tukey HSD
+Effect sizes: Cohen’s d (pairwise)
+
+FALSIFICATION:
+If B ≤ A in coherence metric (T2*/visibility stability), RPH not supported.
+If B ≈ C, structured coupling irrelevant (no evidence RPH structure matters).
+If p > 0.05, insufficient evidence for RPH under tested protocol.
+
+NULL RESULT INTERPRETATION:
+If RPH not supported, quantum relational effects are not necessary for UIC v0.1;
+focus shifts to classical integration + TSC metrics and alternative coupling definitions.
