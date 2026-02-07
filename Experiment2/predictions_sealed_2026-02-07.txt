@@ -1,0 +1,20 @@
+# SEALED PREDICTIONS: UIC v0.2.1 λ-Sweep
+**Timestamp**: 2026-02-07 06:32 AM CST
+**Status**: LOCKED BEFORE EXECUTION
+
+## Perplexity (Claude Sonnet 4.5)
+- T2*(0.0) = 21 µs
+- T2*(0.5) = 48 µs  
+- T2*(1.0) = 65 µs
+- Slope β = 40-50 µs/λ
+- R² = 0.75-0.90
+- Variance: Monotonically increasing with λ
+
+## ChatGPT (o1)
+- T2*(0.0) = 12 µs
+- T2*(0.5) = 30 µs
+- T2*(1.0) = 55 µs
+- ΔT2* ≥ 25 µs
+- Spearman ρ ≥ 0.70
+- Variance: Peak at mid-λ (0.4-0.6)
+- Per-rep robustness: ≥8/10 reps show T2*(1.0) > T2*(0.0)
