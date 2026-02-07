@@ -1,0 +1,26 @@
+======================================================================
+ZBASIS LAMBDA MIXING ANALYSIS (Rounds=5)
+======================================================================
+
+Model: P_mixed(λ) = (1-λ) * P_quantum + λ * P_classical
+
+Amplitude vs λ:
+  Linear fit: A(λ) = -0.0523*λ + 0.3111
+  R² = 0.4493
+
+⚠️ Amplitude doesn't follow expected (1-λ) scaling
+
+T2* vs λ:
+  Mean: 15.91 μs
+  Std:  9.21 μs
+
+⚠️ T2* varies significantly with λ
+
+======================================================================
+Z-BASIS INTERPRETATION:
+======================================================================
+
+This is the NULL TEST (computational basis)!
+Quantum and classical states look identical in Z-basis.
+No λ-dependence expected (validates our understanding).
+

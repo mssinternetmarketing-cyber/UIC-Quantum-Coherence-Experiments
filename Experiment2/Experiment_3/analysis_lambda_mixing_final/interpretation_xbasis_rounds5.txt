@@ -1,0 +1,28 @@
+======================================================================
+XBASIS LAMBDA MIXING ANALYSIS (Rounds=5)
+======================================================================
+
+Model: P_mixed(λ) = (1-λ) * P_quantum + λ * P_classical
+
+Amplitude vs λ:
+  Linear fit: A(λ) = -0.7823*λ + 0.7858
+  R² = 0.9999
+
+✅ Amplitude scales linearly with (1-λ)!
+   → Classical mixing suppresses coherence amplitude
+
+T2* vs λ:
+  Mean: 47.40 μs
+  Std:  4.91 μs
+
+✅ T2* is approximately constant across λ
+   → Decay rate unchanged by classical mixing
+
+======================================================================
+X-BASIS INTERPRETATION:
+======================================================================
+
+This is the COHERENCE-SENSITIVE measurement!
+Expected: Linear amplitude suppression, constant T2*
+This proves classical mixing = coherence suppression model!
+

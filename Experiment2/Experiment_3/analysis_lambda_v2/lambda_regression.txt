@@ -1,0 +1,33 @@
+============================================================
+COHERENCE SCALING MODEL RESULTS
+============================================================
+
+MODEL: V_mixed(t, lambda) = (1-lambda) * V_quantum(t)
+
+--- T2* vs Lambda ---
+slope: 0.89652 us per lambda
+intercept: 5.82722 us
+R^2: 0.159777
+
+⚠️ T2* shows variation with lambda
+   → May indicate fitting issues or non-exponential decay
+
+--- Amplitude vs Lambda ---
+slope: -0.470694 per lambda
+intercept: 0.46989
+R^2: 0.999742
+
+✅ Amplitude scales linearly: a(lambda) ≈ (1-lambda) * a_quantum
+   → Classical model = coherence suppression (as expected!)
+
+============================================================
+INTERPRETATION:
+============================================================
+
+If T2* constant + Amplitude linear:
+  → Hidden variables just suppress coherence amplitude
+  → Decay dynamics are unchanged (classical mixing works)
+
+If T2* varies OR Amplitude nonlinear:
+  → Quantum effects cannot be reduced to classical mixing
+  → Potential Bell-type violation in time domain!

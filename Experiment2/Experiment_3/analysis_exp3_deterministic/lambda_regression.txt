@@ -1,0 +1,4 @@
+Linear regression on per-lambda mean T2* (diagnostic only)
+slope: 207.195 us per lambda
+intercept: -43.0611 us
+R^2: 0.157813

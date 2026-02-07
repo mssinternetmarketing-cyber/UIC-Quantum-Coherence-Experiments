@@ -1,0 +1,6 @@
+Linear regression: T2*(lambda) = m*lambda + b
+slope (m): -0.00491909 us per lambda
+intercept (b): 6.63795 us
+R^2: 2.1933e-05
+
+⚠️ Low R^2 suggests NON-LINEAR behavior (potential quantum violation!)

@@ -1,0 +1,17 @@
+{
+  "timestamp": 1770476373,
+  "backend": "aer_simulator",
+  "shots": 2000,
+  "n_reps": 10,
+  "seed": 1337,
+  "max_delay_us": 200.0,
+  "n_delay_points": 15,
+  "feedback_rounds": 4,
+  "noise_gates_per_round": 4,
+  "idle_t1_us": 120.0,
+  "idle_t2_us": 80.0,
+  "depol_p_1q": 0.0005,
+  "depol_p_2q": 0.002,
+  "lambda_steps": 11,
+  "lambda_implementation": "DETERMINISTIC"
+}

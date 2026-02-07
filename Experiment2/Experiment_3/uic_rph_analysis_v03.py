@@ -48,7 +48,8 @@ def exp_decay_offset(t, a, T, c):
 
 
 def cohen_d(x, y):
-    x = np.asarray(x); y = np.asarray(y)
+    x = np.asarray(x)
+    y = np.asarray(y)
     nx, ny = len(x), len(y)
     if nx < 2 or ny < 2:
         return np.nan
@@ -102,6 +103,7 @@ def decode_blinds(df: pd.DataFrame, decode_path: str) -> pd.DataFrame:
     # dec maps blind token -> semantic label
     df = df.copy()
     df["decoded"] = df["blind"].map(lambda b: dec.get(str(b), str(b)))
+
     # try to extract lambda if label is like "LAMBDA_0.300"
     def extract_lambda(x: str) -> float:
         try:
@@ -110,9 +112,12 @@ def decode_blinds(df: pd.DataFrame, decode_path: str) -> pd.DataFrame:
         except Exception:
             pass
         return np.nan
+
     df["decoded_lambda"] = df["decoded"].map(extract_lambda)
     # prefer decoded_lambda when present
-    df["lambda"] = np.where(np.isfinite(df["decoded_lambda"]), df["decoded_lambda"], df["lambda"])
+    df["lambda"] = np.where(
+        np.isfinite(df["decoded_lambda"]), df["decoded_lambda"], df["lambda"]
+    )
     return df
 
 
@@ -143,7 +148,8 @@ def fit_t2_star_for_rep(d: pd.DataFrame) -> Tuple[float, Dict]:
 
     # Remove NaNs
     m = np.isfinite(t) & np.isfinite(y)
-    t = t[m]; y = y[m]
+    t = t[m]
+    y = y[m]
     if len(t) < 6:
         return (np.nan, {"reason": "too_few_points"})
 
@@ -152,7 +158,7 @@ def fit_t2_star_for_rep(d: pd.DataFrame) -> Tuple[float, Dict]:
         return (np.nan, {"reason": "near_constant_visibility"})
 
     # Initial guesses
-    c0 = float(np.median(y[-max(2, len(y)//4):]))  # tail median
+    c0 = float(np.median(y[-max(2, len(y) // 4) :]))  # tail median
     a0 = float(y[0] - c0)
     T0 = max(1.0, float(np.nanmax(t)) / 3.0)
 
@@ -187,7 +193,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", required=True, help="path to blinded CSV (runner output)")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--decode", default="", help="optional decode map json (AFTER stats are frozen)")
+    ap.add_argument(
+        "--decode", default="", help="optional decode map json (AFTER stats are frozen)"
+    )
     args = ap.parse_args()
 
     ensure_out(args.out)
@@ -214,9 +222,21 @@ def main() -> None:
             json.dump(t1_out, f, indent=2)
 
     # Focus on coherence families (exclude T1)
-    d2 = df[df["kind"].isin(["RAMSEY_SINGLE", "BELL_STRUCTURED", "BELL_NOISE", "BELL_MIXED"])].copy()
+    d2 = df[
+        df["kind"].isin(
+            [
+                "RAMSEY_SINGLE",
+                "BELL_STRUCTURED",
+                "BELL_NOISE",
+                "BELL_MIXED",
+                "BELL_DETERMINISTIC",
+            ]
+        )
+    ].copy()
     if d2.empty:
-        raise SystemExit("No coherence rows found (expected RAMSEY_SINGLE/BELL_* kinds).")
+        raise SystemExit(
+            "No coherence rows found (expected RAMSEY_SINGLE/BELL_* kinds)."
+        )
 
     # Fit per rep per blind/label
     rows = []
@@ -238,7 +258,10 @@ def main() -> None:
     per_rep.to_csv(os.path.join(args.out, "t2star_per_rep_blinded.csv"), index=False)
 
     # Determine whether we have λ sweep
-    has_lambda = np.isfinite(per_rep["lambda"]).any() or per_rep["label"].str.startswith("L").any()
+    has_lambda = (
+        np.isfinite(per_rep["lambda"]).any()
+        or per_rep["label"].str.startswith("L").any()
+    )
 
     # Categorical stats for A/B/C style
     # We'll only run ANOVA/Tukey if there are at least 2 groups with >=2 valid points
@@ -252,20 +275,27 @@ def main() -> None:
     eff_path = os.path.join(args.out, "effect_sizes_t2star.json")
 
     if len(eligible_groups) >= 2:
-        groups = [cat_valid[cat_valid["label"] == g]["t2star_us"].values for g in eligible_groups]
+        groups = [
+            cat_valid[cat_valid["label"] == g]["t2star_us"].values
+            for g in eligible_groups
+        ]
         F, p = f_oneway(*groups)
-        pd.DataFrame([{"F": F, "p_value": p, "groups": "|".join(eligible_groups)}]).to_csv(anova_path, index=False)
+        pd.DataFrame(
+            [{"F": F, "p_value": p, "groups": "|".join(eligible_groups)}]
+        ).to_csv(anova_path, index=False)
 
-        tuk = pairwise_tukeyhsd(endog=cat_valid[cat_valid["label"].isin(eligible_groups)]["t2star_us"],
-                                groups=cat_valid[cat_valid["label"].isin(eligible_groups)]["label"],
-                                alpha=0.05)
+        tuk = pairwise_tukeyhsd(
+            endog=cat_valid[cat_valid["label"].isin(eligible_groups)]["t2star_us"],
+            groups=cat_valid[cat_valid["label"].isin(eligible_groups)]["label"],
+            alpha=0.05,
+        )
         with open(tukey_path, "w", encoding="utf-8") as f:
             f.write(str(tuk))
 
         # Effect sizes: pairwise Cohen's d
         eff = {}
         for i, g1 in enumerate(eligible_groups):
-            for g2 in eligible_groups[i+1:]:
+            for g2 in eligible_groups[i + 1 :]:
                 x = cat_valid[cat_valid["label"] == g1]["t2star_us"].values
                 y = cat_valid[cat_valid["label"] == g2]["t2star_us"].values
                 eff[f"{g1}_vs_{g2}"] = float(cohen_d(x, y))
@@ -298,8 +328,14 @@ def main() -> None:
                 ss_tot = float(np.sum((y - np.mean(y)) ** 2))
                 r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else np.nan
 
-                with open(os.path.join(args.out, "lambda_regression.txt"), "w", encoding="utf-8") as f:
-                    f.write("Linear regression on per-lambda mean T2* (diagnostic only)\n")
+                with open(
+                    os.path.join(args.out, "lambda_regression.txt"),
+                    "w",
+                    encoding="utf-8",
+                ) as f:
+                    f.write(
+                        "Linear regression on per-lambda mean T2* (diagnostic only)\n"
+                    )
                     f.write(f"slope: {m:.6g} us per lambda\n")
                     f.write(f"intercept: {b:.6g} us\n")
                     f.write(f"R^2: {r2:.6g}\n")
@@ -312,7 +348,7 @@ def main() -> None:
         print(f"- Tukey:  {tukey_path}")
     if os.path.exists(eff_path):
         print(f"- effects:{eff_path}")
-    if os.path.exists(os.path.join(args.out, 'lambda_summary.csv')):
+    if os.path.exists(os.path.join(args.out, "lambda_summary.csv")):
         print(f"- lambda: {os.path.join(args.out, 'lambda_summary.csv')}")
 
 
