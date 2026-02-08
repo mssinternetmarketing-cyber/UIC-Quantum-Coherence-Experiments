@@ -1,0 +1,17 @@
+{
+  "Z": "calibration",
+  "A": "isolated",
+  "B": "structured_coupling",
+  "C": "random_noise",
+  "L00": "LAMBDA_0.000",
+  "L04": "LAMBDA_0.100",
+  "L01": "LAMBDA_0.200",
+  "L10": "LAMBDA_0.300",
+  "L03": "LAMBDA_0.400",
+  "L07": "LAMBDA_0.500",
+  "L06": "LAMBDA_0.600",
+  "L02": "LAMBDA_0.700",
+  "L05": "LAMBDA_0.800",
+  "L08": "LAMBDA_0.900",
+  "L09": "LAMBDA_1.000"
+}
